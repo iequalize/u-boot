@@ -296,7 +296,7 @@ extern unsigned tqma28_get_mmc_devid(void);
 		"echo Copied U-Boot image from sd card to emmc\0"	\
 	"upd_kernel_net=tftp $kernel && "				\
 		"setexpr r1 $filesize / 0x200 && setexpr r1 $r1 + 1 && "\
-		"mmc dev 0 && mmc write $loadaddr 8000 $r1 && "		\
+		"mmc dev 1 && mmc write $loadaddr 8000 $r1 && "		\
 		"echo Copied Kernel image from ethernet to emmc\0"	\
 	"upd_kernel_sd=mmc dev 0 && mmc read $loadaddr 8000 4000 && "	\
 		"mmc dev 1 && mmc write $loadaddr 8000 4000 && "	\
