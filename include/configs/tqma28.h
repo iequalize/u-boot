@@ -341,7 +341,7 @@ extern unsigned tqma28_get_mmc_devid(void);
 	"boot_nfs=run addether addip addnfs addtty addlcd addmisc; "	\
 		"tftp $loadaddr $kernel; tftp $fdtaddr $dtb; "		\
 		"bootz $loadaddr - $fdtaddr\0"				\
-	"boot_ssp=run addether addip addmmc addtty addlcd addmisc; "	\
+	"boot_ssp=run addether addmmc addtty addlcd addmisc; "	\
 		"mmc read $loadaddr 8000 4000; "			\
 		"mmc read $fdtaddr 3000 1000; "				\
 		"bootz $loadaddr - $fdtaddr\0"				\
