@@ -551,8 +551,7 @@ static int mmc_send_op_cond(struct mmc *mmc)
 		cmd.cmdarg = (mmc_host_is_spi(mmc) ? 0 :
 				(mmc->voltages &
 				(cmd.response[0] & OCR_VOLTAGE_MASK)) |
-				(cmd.response[0] & OCR_ACCESS_MODE)) |
-				OCR_ACCESS_SECTOR_MODE;
+				(cmd.response[0] & OCR_ACCESS_MODE));
 
 		if (mmc->host_caps & MMC_MODE_HC)
 			cmd.cmdarg |= OCR_HCS;
