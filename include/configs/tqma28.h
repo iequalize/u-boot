@@ -75,6 +75,7 @@ extern unsigned tqma28_get_mmc_devid(void);
 #define CONFIG_CMD_MMC
 #define CONFIG_CMD_NET
 #define CONFIG_CMD_NFS
+#define CONFIG_CMD_OTP_MXS
 #define CONFIG_CMD_PING
 #if 0
 #define CONFIG_CMD_SPI /* cmd_spi uses full-duplex, not supported by mx28 */
