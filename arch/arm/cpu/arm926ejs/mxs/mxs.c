@@ -335,8 +335,11 @@ int cpu_eth_init(bd_t *bis)
 
 __weak void mx28_adjust_mac(int dev_id, unsigned char *mac)
 {
+	/* Freescale Semiconductor: 00:04:9F:xx:xx:xx
+	 * TQ Components Gmbh:      00:D0:93:xx:xx:xx (default)
+	 */
 	mac[0] = 0x00;
-	mac[1] = 0x04; /* Use FSL vendor MAC address by default */
+	mac[1] = 0xD0;
 
 	if (dev_id == 1) /* Let MAC1 be MAC0 + 1 by default */
 		mac[5] += 1;
