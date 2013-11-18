@@ -48,6 +48,7 @@ static u32 system_rev;
 #define HW3REV0100 0x100
 #define HW3REV0200 0x200
 #define HW3REV0300 0x300
+#define HW3REV0400 0x400
 
 #define MUX_CONFIG_REV (MXS_PAD_3V3 | MXS_PAD_4MA | MXS_PAD_NOPULL)
 #define MUX_CONFIG_LED (MXS_PAD_3V3 | MXS_PAD_4MA | MXS_PAD_NOPULL)
@@ -61,7 +62,7 @@ static const iomux_cfg_t leds_hw0100_pads[] = {
 	MX28_PAD_GPMI_ALE__GPIO_0_26 | MUX_CONFIG_LED,
 };
 
-/* LEDs on HW3 Rev 0200 */
+/* LEDs on HW3 Rev 0200 and later */
 static const iomux_cfg_t leds_hw0200_pads[] = {
 	MX28_PAD_LCD_D18__GPIO_1_18 | MUX_CONFIG_LED,
 	MX28_PAD_LCD_D19__GPIO_1_19 | MUX_CONFIG_LED,
@@ -116,6 +117,7 @@ void board_rev_init(void)
 	 * REV0100^: all pins floating               -> 111 -> 000 -> 0x0100
 	 * REV0200^: floating, pull-down, floating   -> 101 -> 010 -> 0x0200
 	 * REV0300:  pull-up, pull-down, pull-down   -> 100 -> 011 -> 0x0300
+	 * REV0400:  pull-down, pull-up, pull-up     -> 011 -> 100 -> 0x0400
 	 * unusable: pull-down, pull-down, pull-down -> 000 -> 111 -> 0x0700
 	 *
 	 * ^ Sampling the pins might be unreliable due to missing pull-ups/pull-downs.
@@ -154,6 +156,7 @@ void board_leds_init(void)
 		break;
 	case HW3REV0200:
 	case HW3REV0300:
+	case HW3REV0400:
 	default:
 		mxs_iomux_setup_multiple_pads(
 			leds_hw0200_pads, ARRAY_SIZE(leds_hw0200_pads));
@@ -173,6 +176,7 @@ void board_leds_init(void)
 		break;
 	case HW3REV0200:
 	case HW3REV0300:
+	case HW3REV0400:
 	default:
 		gpio_set_value(MX28_PAD_LCD_D18__GPIO_1_18, 1);
 		gpio_set_value(MX28_PAD_LCD_D19__GPIO_1_19, 1);
