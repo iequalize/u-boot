@@ -191,7 +191,7 @@ int board_mmc_init(bd_t *bis)
 
 int mxs_eth_enable_clock_out(void)
 {
-	if (system_rev == HW3REV0300)
+	if (system_rev >= HW3REV0300)
 		return 0;
 
 	return 1;
