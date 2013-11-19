@@ -216,8 +216,13 @@ static int otp_mxs_getmac(void)
 		mac[0],mac[1],mac[2],mac[3],mac[4],mac[5]);
 	setenv("ethaddr", string);
 
+	data = data + 1;
+	mac[3] = (data >> 16) & 0xff;
+	mac[4] = (data >> 8) & 0xff;
+	mac[5] = data & 0xff;
+
 	snprintf(string, 18, "%02X:%02X:%02X:%02X:%02X:%02X",
-		mac[0],mac[1],mac[2],mac[3],mac[4],mac[5]+1);
+		mac[0],mac[1],mac[2],mac[3],mac[4],mac[5]);
 	setenv("eth1addr", string);
 
 	/* close banks after reading */
