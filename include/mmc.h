@@ -248,6 +248,8 @@ struct mmc {
 	uint card_caps;
 	uint host_caps;
 	uint ocr;
+	uint dsr;
+	uint dsr_imp;
 	uint scr[2];
 	uint csd[4];
 	uint cid[4];
@@ -281,6 +283,9 @@ int get_mmc_num(void);
 int board_mmc_getcd(struct mmc *mmc);
 int mmc_switch_part(int dev_num, unsigned int part_num);
 int mmc_getcd(struct mmc *mmc);
+
+int mmc_set_dsr(struct mmc *mmc, u16 val);
+
 int mmc_getwp(struct mmc *mmc);
 void spl_mmc_load(void) __noreturn;
 

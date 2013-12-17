@@ -996,6 +996,7 @@ static int mmc_startup(struct mmc *mmc)
 
 	mmc->tran_speed = freq * mult;
 
+	mmc->dsr_imp = ((cmd.response[1] >> 12) & 0x1);
 	mmc->read_bl_len = 1 << ((cmd.response[1] >> 16) & 0xf);
 
 	if (IS_SD(mmc))
@@ -1021,6 +1022,14 @@ static int mmc_startup(struct mmc *mmc)
 
 	if (mmc->write_bl_len > 512)
 		mmc->write_bl_len = 512;
+
+	if ((mmc->dsr_imp) && (0xffffffff != mmc->dsr)) {
+		cmd.cmdidx = MMC_CMD_SET_DSR;
+		cmd.cmdarg = (mmc->dsr & 0xffff) << 16;
+		cmd.resp_type = MMC_RSP_NONE;
+		if (mmc_send_cmd(mmc, &cmd, NULL))
+			printf("MMC: SET_DSR failed\n");
+	}
 
 	/* Select the card, and put it into Transfer Mode */
 	if (!mmc_host_is_spi(mmc)) { /* cmd not supported in spi */
@@ -1244,6 +1253,9 @@ static int mmc_send_if_cond(struct mmc *mmc)
 
 int mmc_register(struct mmc *mmc)
 {
+	/* Setup dsr related values */
+	mmc->dsr_imp = 0;
+	mmc->dsr = 0xffffffff;
 	/* Setup the universal parts of the block interface just once */
 	mmc->block_dev.if_type = IF_TYPE_MMC;
 	mmc->block_dev.dev = cur_dev_num++;
@@ -1324,6 +1336,12 @@ int mmc_init(struct mmc *mmc)
 	else
 		mmc->has_init = 1;
 	return err;
+}
+
+int mmc_set_dsr(struct mmc *mmc, u16 val)
+{
+	mmc->dsr = val;
+	return 0;
 }
 
 /*
