@@ -173,6 +173,8 @@ extern unsigned tqma28_get_mmc_devid(void);
 #define CONFIG_GENERIC_MMC
 #define CONFIG_BOUNCE_BUFFER
 #define CONFIG_MXS_MMC
+#define CONFIG_MMC_INDEX	0
+#define CONFIG_SD_INDEX		1
 #endif
 
 /*

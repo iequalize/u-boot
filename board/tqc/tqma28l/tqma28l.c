@@ -110,16 +110,16 @@ unsigned tqma28l_get_mmc_devid()
 	 * Booting spi/i2c devices thus loads emmc environment.
 	 */
 	if (boot_mode == BOOT_MODE_SD0)
-		mmc_id = 0;
+		mmc_id = CONFIG_SD_INDEX;
 	else
-		mmc_id = 1;
+		mmc_id = CONFIG_MMC_INDEX;
 
 	return mmc_id;
 }
 
 static int tqma28l_sd_wp(int id)
 {
-	if (id != 0) {
+	if (id != CONFIG_SD_INDEX) {
 		printf("MXS MMC: Invalid card selected (card id = %d)\n", id);
 		return 1;
 	}
@@ -145,12 +145,16 @@ int board_mmc_init(bd_t *bis)
 	int ret = 0;
 	struct mmc *mmc;
 
-	ret = mxsmmc_initialize(bis, 0, tqma28l_sd_wp, tqma28l_sd_cd) |
-		mxsmmc_initialize(bis, 1, NULL, tqma28l_sd_cd);
+	ret = mxsmmc_initialize(bis, CONFIG_MMC_INDEX, NULL, tqma28l_sd_cd) |
+		mxsmmc_initialize(bis, CONFIG_SD_INDEX,
+					tqma28l_sd_wp,
+					tqma28l_sd_cd);
 
-	mmc = find_mmc_device(1);
+	mmc = find_mmc_device(CONFIG_MMC_INDEX);
 	if (!mmc)
-		printf("%s: MMC device 1 not found.\n",__func__);
+		printf("%s: MMC device %d not found.\n",
+					__func__,
+					CONFIG_MMC_INDEX);
 	else
 		mmc->block_dev.removable = 0;
 
