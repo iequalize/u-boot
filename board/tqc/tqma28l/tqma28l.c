@@ -52,6 +52,8 @@ struct mxsmmc_priv {
 	struct mxs_dma_desc	*desc;
 };
 
+static uint16_t tqma28_emmc_dsr = 0x0100;
+
 /*
  * Functions
  */
@@ -155,8 +157,10 @@ int board_mmc_init(bd_t *bis)
 		printf("%s: MMC device %d not found.\n",
 					__func__,
 					CONFIG_MMC_INDEX);
-	else
+	else {
 		mmc->block_dev.removable = 0;
+		mmc_set_dsr(mmc, tqma28_emmc_dsr);
+	}
 
 	/* Configure SD WP as input */
 	gpio_direction_input(MX28_PAD_GPMI_RESETN__GPIO_0_28);
