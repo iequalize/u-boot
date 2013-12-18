@@ -35,6 +35,7 @@
 #include <netdev.h>
 #include <errno.h>
 #include <mmc.h>
+#include <libfdt.h>
 
 DECLARE_GLOBAL_DATA_PTR;
 
@@ -258,3 +259,18 @@ int misc_init_r(void)
 
 	return 0;
 }
+
+/*
+ * Device Tree Setup
+ */
+#if defined(CONFIG_OF_BOARD_SETUP) && defined(CONFIG_OF_LIBFDT)
+
+void ft_board_setup(void *blob, bd_t *bd)
+{
+	/* bring in e-MMC dsr settings */
+	/* to SSP0 */
+	do_fixup_by_path_u32(blob,
+				"/apb@80000000/apbh@80000000/ssp@80010000",
+				"tq,dsr", tqma28_emmc_dsr, 1);
+}
+#endif /* defined(CONFIG_OF_BOARD_SETUP) && defined(CONFIG_OF_LIBFDT) */

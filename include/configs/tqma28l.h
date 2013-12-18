@@ -261,6 +261,7 @@ extern unsigned tqma28_get_mmc_devid(void);
 #define CONFIG_LOADADDR	0x42000000
 #define CONFIG_SYS_LOAD_ADDR	CONFIG_LOADADDR
 #define CONFIG_OF_LIBFDT
+#define CONFIG_OF_BOARD_SETUP
 #define CONFIG_FIT
 
 #if defined(CONFIG_TQMA28L_AA)
