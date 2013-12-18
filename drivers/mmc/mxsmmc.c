@@ -415,6 +415,7 @@ int mxsmmc_initialize(bd_t *bis, int id, int (*wp)(int), int (*cd)(int))
 	priv->id = id;
 	priv->regs = mxs_ssp_regs_by_bus(id);
 
+	memset(mmc, 0, sizeof(struct mmc));
 	sprintf(mmc->name, "MXS MMC");
 	mmc->send_cmd = mxsmmc_send_cmd;
 	mmc->set_ios = mxsmmc_set_ios;
