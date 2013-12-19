@@ -36,6 +36,7 @@
 #include <errno.h>
 #include <mmc.h>
 #include <libfdt.h>
+#include <malloc.h>
 
 DECLARE_GLOBAL_DATA_PTR;
 
@@ -50,6 +51,7 @@ struct mxsmmc_priv {
 };
 
 static uint16_t tqma28_emmc_dsr = 0x0100;
+static uint8_t tqma28_enet_clk_int = 0;
 
 /*
  * Functions
@@ -166,6 +168,13 @@ int board_mmc_init(bd_t *bis)
 #endif
 
 #ifdef	CONFIG_CMD_NET
+int mxs_eth_enable_clock_out(void)
+{
+	if (tqma28_enet_clk_int)
+		return 1;
+
+	return 0;
+}
 
 int board_eth_init(bd_t *bis)
 {
@@ -174,11 +183,19 @@ int board_eth_init(bd_t *bis)
 	struct eth_device *dev;
 	int ret;
 
+	/* Check env for var to enable enet clk output */
+	tqma28_enet_clk_int = (1 == getenv_yesno("enet_clk_internal"));
+
 	ret = cpu_eth_init(bis);
 
 	/* MX28EVK uses ENET_CLK PAD to drive FEC clock */
-	writel(CLKCTRL_ENET_TIME_SEL_RMII_CLK | CLKCTRL_ENET_CLK_OUT_EN,
+	if (tqma28_enet_clk_int) {
+		puts("[FEC MXS: Using internal ENET_CLK]\n");
+		writel(CLKCTRL_ENET_TIME_SEL_RMII_CLK | CLKCTRL_ENET_CLK_OUT_EN,
 					&clkctrl_regs->hw_clkctrl_enet);
+	} else {
+		puts("[FEC MXS: Using external ENET_CLK]\n");
+	}
 
 	/* Reset FEC PHYs */
 	gpio_direction_output(MX28_PAD_ENET0_RX_CLK__GPIO_4_13, 1);
@@ -264,6 +281,81 @@ int misc_init_r(void)
  * Device Tree Setup
  */
 #if defined(CONFIG_OF_BOARD_SETUP) && defined(CONFIG_OF_LIBFDT)
+/*
+ * When user wants enet_clk driven by external source
+ * tell the kernel to not enable the internal driver.
+ *
+ * By default the internal driver is enabled in mainline device tree
+ * so we need to remove it in case we want external source.
+ */
+void tqma28_dt_enet_clk_ext_setup(void *blob)
+{
+	const char *names_prop = "clock-names";
+	const char *names;
+	const char *n;
+	char *n_names;
+	char *n_n;
+
+	const char *clks_prop = "clocks";
+	const u32 *clocks;
+	const u32 *c;
+	u32 *n_clocks;
+	u32 *n_c;
+	u8 clks_size = (sizeof(u32)+sizeof(u32));
+
+	int mac0_ofs;
+	int clocks_len, names_len;
+	int ret;
+	int n_clocks_len = 0;
+	int n_names_len = 0;
+	int word = 0;
+
+	mac0_ofs = fdt_path_offset(blob, "/ahb@80080000/ethernet@800f0000");
+
+	clocks = fdt_getprop(blob, mac0_ofs, clks_prop, &clocks_len);
+	n_clocks = malloc(clocks_len);
+	memset(n_clocks, 0, clocks_len);
+
+	names = fdt_getprop(blob, mac0_ofs, names_prop, &names_len);
+	n_names = malloc(names_len);
+	memset(n_names, 0, names_len);
+
+	/*
+	 * parse clock names for enet_out to remove
+	 * by creating new properties without enet_out
+	 */
+	n = names;
+	n_n = n_names;
+	c = clocks;
+	n_c = n_clocks;
+	while (n < names + names_len)
+	{
+		/* string + null byte*/
+		word = (strlen(n)+1);
+		if (strcmp(n, "enet_out")) {
+			/* not string we look for, keep it in n_names */
+			memcpy(n_n, n, word);
+			n_n += word;
+			n_names_len += word;
+
+			/*
+			 * keep also the corresponding clocks entry
+			 * consisting of two u32 values.
+			 * TODO: use struct?
+			 */
+			memcpy(n_c, c, clks_size);
+			n_c++; n_c++;
+			n_clocks_len += clks_size;
+		}
+		n += word;
+		c++; c++;
+	}
+
+	ret = fdt_setprop(blob, mac0_ofs, clks_prop, n_clocks, n_clocks_len);
+	ret |= fdt_setprop(blob, mac0_ofs, names_prop, n_names, n_names_len);
+	if (ret)
+		printf("fdt_setprop(): %s\n", fdt_strerror(ret));
+}
 
 void ft_board_setup(void *blob, bd_t *bd)
 {
@@ -272,5 +364,9 @@ void ft_board_setup(void *blob, bd_t *bd)
 	do_fixup_by_path_u32(blob,
 				"/apb@80000000/apbh@80000000/ssp@80010000",
 				"tq,dsr", tqma28_emmc_dsr, 1);
+
+	if (!tqma28_enet_clk_int)
+		tqma28_dt_enet_clk_ext_setup(blob);
+
 }
 #endif /* defined(CONFIG_OF_BOARD_SETUP) && defined(CONFIG_OF_LIBFDT) */
