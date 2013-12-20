@@ -150,10 +150,9 @@ int board_mmc_init(bd_t *bis)
 	int ret = 0;
 	struct mmc *mmc;
 
-	ret = mxsmmc_initialize(bis, CONFIG_MMC_INDEX, NULL, tqma28l_sd_cd) |
-		mxsmmc_initialize(bis, CONFIG_SD_INDEX,
-					tqma28l_sd_wp,
-					tqma28l_sd_cd);
+	ret = mxsmmc_initialize(bis, CONFIG_SD_INDEX, tqma28l_sd_wp,
+								tqma28l_sd_cd);
+	ret |= mxsmmc_initialize(bis, CONFIG_MMC_INDEX, NULL, tqma28l_sd_cd);
 
 	mmc = find_mmc_device(CONFIG_MMC_INDEX);
 	if (!mmc)
