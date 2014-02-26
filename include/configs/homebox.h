@@ -123,11 +123,12 @@
 #define CONFIG_APBH_DMA
 
 /* MMC Driver */
+#define CONFIG_MMC_INDEX 0
 #define CONFIG_ENV_IS_IN_MMC
 #ifdef CONFIG_ENV_IS_IN_MMC
  #define CONFIG_ENV_OFFSET		(0x400)			/*  1 KB */
  #define CONFIG_ENV_SIZE		(0x10000 - 0x400)	/* 63 KB */
- #define CONFIG_SYS_MMC_ENV_DEV		0
+ #define CONFIG_SYS_MMC_ENV_DEV		CONFIG_MMC_INDEX
  #define CONFIG_ENV_OFFSET_REDUND	(0x10400)		/* 65 KB */
  #define CONFIG_SYS_REDUNDAND_ENVIRONMENT
 #endif
@@ -201,7 +202,7 @@
 		"linux2_start=2800\0"                                           \
 		"addether=setenv bootargs fec_mac=${ethaddr}\0"                 \
 		"addtty=setenv bootargs ${bootargs} console=${console_fsl},${baudrate}\0"         \
-		"addmisc=setenv bootargs ${bootargs} panic=1\0"                                   \
+		"addmisc=setenv bootargs ${bootargs} tq_dsr=${tq_dsr} panic=1\0"                  \
 		"erase_mmc=mw.b ${loadaddr} 0 512; mmc write ${loadaddr} 0 2\0"                   \
 		"erase_env1=mw.b ${loadaddr} 0 512; mmc write ${loadaddr} 2 7E\0"                 \
 		"erase_env2=mw.b ${loadaddr} 0 512; mmc write ${loadaddr} 80 7E\0"                \

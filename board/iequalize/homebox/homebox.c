@@ -43,6 +43,7 @@
 DECLARE_GLOBAL_DATA_PTR;
 
 static u32 system_rev;
+static uint16_t tqma28l_emmc_dsr = 0x0100;
 
 #define SYSTEM_REV_OFFSET    0x8
 #define HW3REV0100 0x100
@@ -187,7 +188,18 @@ void board_leds_init(void)
 #ifdef	CONFIG_CMD_MMC
 int board_mmc_init(bd_t *bis)
 {
-	return mxsmmc_initialize(bis, 1, NULL, NULL);
+	struct mmc *mmc;
+	int ret;
+
+	ret = mxsmmc_initialize(bis, 1, NULL, NULL);
+
+	mmc = find_mmc_device(CONFIG_MMC_INDEX);
+	if (mmc) {
+		mmc->block_dev.removable = 0;
+		mmc_set_dsr(mmc, tqma28l_emmc_dsr);
+	}
+
+	return ret;
 }
 #endif
 
@@ -248,6 +260,7 @@ int board_eth_init(bd_t *bis)
 
 int misc_init_r(void)
 {
+	char buffer[16];
 	char *s = getenv("serial");
 
 	puts("Board: Home-Box\n");
@@ -257,6 +270,9 @@ int misc_init_r(void)
 		puts(s);
 		putc('\n');
 	}
+
+	sprintf(buffer, "%d", tqma28l_emmc_dsr);
+	setenv("tq_dsr", buffer);
 
 	return 0;
 }
