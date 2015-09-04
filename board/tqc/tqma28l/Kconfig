@@ -1,0 +1,40 @@
+if TARGET_TQMA28L
+
+config SYS_ARCH
+	default "arm"
+
+config SYS_BOARD
+	default "tqma28l"
+
+config SYS_VENDOR
+	default "tqc"
+
+config SYS_CPU
+	default "arm926ejs"
+
+config SYS_SOC
+	default "mxs"
+
+config SYS_CONFIG_NAME
+	default "tqma28l"
+
+config TQMA28L_AA
+	bool "TQMa28L-AA"
+	help
+	  select TQMa28L-AA variant: i.MX287 with ETH1 port and AUART3
+
+choice
+	prompt "TQMa28L base board variant"
+	optional
+	help
+	  Select base board for TQMa28L
+
+config TQMA28L_MBA28L
+	bool "TQMa28L on MBa28(L) Starterkit"
+	help
+	  Select the MBa28L starterkit. It is a standard MBa28 kit mounted with
+	  a TQMa28L module. This features a Ethernet, USB, SD-Card, etc.
+
+endchoice
+
+endif

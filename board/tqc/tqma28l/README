@@ -1,0 +1,34 @@
+U-Boot for the TQ Systems TQMa28x modules
+
+This file contains information for the port of
+U-Boot to the TQ Systems TQMa28x modules.
+
+1. Boot source
+--------------
+
+The following boot source is supported:
+
+- SD/eMMC
+
+2. Building
+------------
+
+To build U-Boot for the TQ Systems TQMa28x modules:
+
+	make <x>_<baseboard>_defconfig
+	make
+
+x is a placeholder for different module variants:
+tqma28     - TQMa28 module with i.MX287 CPU
+tqma28l    - TQMa28L-AB minimodule with i.MX283 CPU
+tqma28l_aa - TQMa28L-AA minimodule with i.MX287 CPU
+
+baseboard is a placeholder:
+mba28      - MBa28 starterkit with a TQMa28
+mba28l     - MBa28 starterkit with a TQMa28L (either AA or AB)
+
+This gives the following configurations:
+
+tqma28_mba28_defconfig		(not implemented)
+tqma28l_mba28l_defconfig
+tqma28l_aa_mba28l_defconfig
