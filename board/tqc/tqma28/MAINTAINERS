@@ -1,0 +1,7 @@
+TQ SYSTEMS TQMA28L BOARD
+M:	Michael Krummsdorf <michael.krummsdorf@tq-group.com>
+S:	Maintained
+F:	board/tqc/tqma28/
+F:	include/configs/tqma28.h
+F:	configs/tqma28*_defconfig
+

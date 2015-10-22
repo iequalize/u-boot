@@ -1,0 +1,48 @@
+if TARGET_TQMA28
+
+config SYS_ARCH
+	default "arm"
+
+config SYS_BOARD
+	default "tqma28"
+
+config SYS_VENDOR
+	default "tqc"
+
+config SYS_CPU
+	default "arm926ejs"
+
+config SYS_SOC
+	default "mxs"
+
+config SYS_CONFIG_NAME
+	default "tqma28"
+
+choice
+	prompt "RAM size"
+	optional
+	help
+		Select RAM size on your module.
+
+config TQMA28_128MB
+	bool "128 MB"
+
+config TQMA28_256MB
+	bool "256 MB"
+
+endchoice
+
+choice
+	prompt "Base board variant"
+	optional
+	help
+	  Select base board for TQMa28 module
+
+config TQMA28_MBA28
+	bool "TQMa28 on MBa28 Starterkit"
+	help
+	  Select the MBa28 starterkit. This features a Ethernet, USB, SD-Card, etc.
+
+endchoice
+
+endif

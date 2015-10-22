@@ -178,6 +178,11 @@ config TARGET_MX28EVK
 	select CPU_ARM926EJS
 	select SUPPORT_SPL
 
+config TARGET_TQMA28
+	bool "Support TQMa28"
+	select CPU_ARM926EJS
+	select SUPPORT_SPL
+
 config TARGET_TQMA28L
 	bool "Support TQMa28L"
 	select CPU_ARM926EJS
@@ -977,6 +982,7 @@ source "board/ti/ti816x/Kconfig"
 source "board/timll/devkit3250/Kconfig"
 source "board/toradex/colibri_pxa270/Kconfig"
 source "board/toradex/colibri_vf/Kconfig"
+source "board/tqc/tqma28/Kconfig"
 source "board/tqc/tqma28l/Kconfig"
 source "board/trizepsiv/Kconfig"
 source "board/ttcontrol/vision2/Kconfig"
