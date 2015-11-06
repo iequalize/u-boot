@@ -35,6 +35,12 @@ config TQMA28L_MBA28L
 	  Select the MBa28L starterkit. It is a standard MBa28 kit mounted with
 	  a TQMa28L module. This features a Ethernet, USB, SD-Card, etc.
 
+config TQMA28L_NONE
+	bool "TQMa28L without baseboard interface support"
+	help
+	  This option builds U-Boot without any support for baseboard specific
+	  interfaces. Only devices on the module will be available.
+
 endchoice
 
 endif
