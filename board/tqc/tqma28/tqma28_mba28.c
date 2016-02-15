@@ -180,7 +180,7 @@ int board_eth_init(bd_t *bis)
 		return ret;
 	}
 
-	ret = fecmxc_initialize_multi(bis, 1, 3, MXS_ENET1_BASE);
+	ret = fecmxc_initialize_multi(bis, 1, 1, MXS_ENET1_BASE);
 	if (ret) {
 		puts("FEC MXS: Unable to init FEC1\n");
 		return ret;
