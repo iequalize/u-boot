@@ -66,8 +66,19 @@ static uint32_t dram_vals[] = {
 	0x00000000, 0x00000000, 0x00000000, 0x01010000,
 	0x01000000, 0x03030000, 0x00010303, 0x01020202,
 	0x00000000, 0x02040303, 0x21002103, 0x00061200,
+#if defined(CONFIG_TARGET_TQMA28L)
+/*
+ * TQMa28L has a single memory chip on chip select 0
+ * HW_DRAM_CTL183/184 - EMR1 on chip selects 0,1,2,3
+ *  - R_Pi disabled
+ *  - Reduced output drive strength
+ */
+	0x06120612, 0x04420442, 0x04420442, 0x00020002,
+	0x00020002, 0x00000000, 0x00000000, 0x00000000,
+#else
 	0x06120612, 0x04420442, 0x04420442, 0x00040004,
 	0x00040004, 0x00000000, 0x00000000, 0x00000000,
+#endif
 	0x00000000, 0xffffffff
 
 /*
