@@ -222,7 +222,7 @@ static void mxs_mem_setup_vdda(void)
 	debug("SPL: Configuring VDDA\n");
 
 	writel((0xc << POWER_VDDACTRL_TRG_OFFSET) |
-		(0x7 << POWER_VDDACTRL_BO_OFFSET_OFFSET) |
+		(0x6 << POWER_VDDACTRL_BO_OFFSET_OFFSET) |
 		POWER_VDDACTRL_LINREG_OFFSET_1STEPS_BELOW,
 		&power_regs->hw_power_vddactrl);
 }
