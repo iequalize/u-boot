@@ -53,6 +53,26 @@ int dram_init(void)
 	return mxs_dram_init();
 }
 
+void mx28_adjust_mac(int dev_id, unsigned char *mac)
+{
+	uint32_t data;
+
+	/*
+	 * TQ Components Gmbh:      00:D0:93:xx:xx:xx (default)
+	 */
+
+	mac[0] = 0x00;
+	mac[1] = 0xD0;
+
+	if (dev_id == 1) { /* Let MAC1 be MAC0 + 1 by default */
+		data = (mac[3] << 16) | (mac[4] << 8) | mac[5];
+		data = data + 1;
+		mac[3] = (data >> 16) & 0xFF;
+		mac[4] = (data >> 8) & 0xFF;
+		mac[5] = data & 0xFF;
+	}
+}
+
 /*
  * static eeprom: EEPROM layout
  */
