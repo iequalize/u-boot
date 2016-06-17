@@ -76,8 +76,8 @@ const iomux_cfg_t tqma28_bb_iomux_setup[] = {
 
 void tqma28_bb_board_init_ll(const uint32_t arg, const uint32_t *resptr)
 {
-	mxs_common_spl_init(arg, resptr, tqma28_bb_iomux_setup,
-			      ARRAY_SIZE(tqma28_bb_iomux_setup));
+	mxs_iomux_setup_multiple_pads(tqma28_bb_iomux_setup,
+			   ARRAY_SIZE(tqma28_bb_iomux_setup));
 }
 #endif
 
