@@ -97,20 +97,33 @@ void tqma28l_bb_board_init_ll(const uint32_t arg, const uint32_t *resptr)
 int tqma28l_bb_board_early_init_f(void)
 {
 #ifdef	CONFIG_CMD_USB
-	/* MBa28 has two USB ports - power up both */
 	mxs_iomux_setup_pad(MX28_PAD_SSP2_SS2__USB0_OVERCURRENT);
 	mxs_iomux_setup_pad(MX28_PAD_GPMI_RDY0__GPIO_0_20 |
 			MXS_PAD_4MA | MXS_PAD_3V3 | MXS_PAD_NOPULL);
-	gpio_direction_output(MX28_PAD_GPMI_RDY0__GPIO_0_20, 1);
+	gpio_direction_output(MX28_PAD_GPMI_RDY0__GPIO_0_20, 0);
 
 	mxs_iomux_setup_pad(MX28_PAD_SSP2_SS1__USB1_OVERCURRENT);
 	mxs_iomux_setup_pad(MX28_PAD_SSP0_DATA4__GPIO_2_4 |
 			MXS_PAD_4MA | MXS_PAD_3V3 | MXS_PAD_NOPULL);
-	gpio_direction_output(MX28_PAD_SSP0_DATA4__GPIO_2_4, 1);
+	gpio_direction_output(MX28_PAD_SSP0_DATA4__GPIO_2_4, 0);
 #endif
 
 	return 0;
 }
+
+#ifdef CONFIG_CMD_USB
+int board_ehci_hcd_init(int port)
+{
+	return (gpio_direction_output(MX28_PAD_GPMI_RDY0__GPIO_0_20, 1) |
+		gpio_direction_output(MX28_PAD_SSP0_DATA4__GPIO_2_4, 1));
+}
+
+int board_ehci_hcd_exit(int port)
+{
+	return (gpio_direction_output(MX28_PAD_GPMI_RDY0__GPIO_0_20, 0) |
+		gpio_direction_output(MX28_PAD_SSP0_DATA4__GPIO_2_4, 0));
+}
+#endif
 
 #ifdef	CONFIG_CMD_MMC
 static int tqma28l_sd_wp(int id)
