@@ -185,7 +185,11 @@ static int read_eeprom(unsigned int bus, unsigned int addr,
 {
 	int ret;
 
-	bus = (CONFIG_MXS_I2C_BASE == MXS_I2C1_BASE);
+	/*
+	 * ignore value of parameter bus
+	 * select i2c bus with most devices
+	 */
+	i2c_set_bus_num(1);
 	ret = i2c_read(addr, 0, CONFIG_SYS_I2C_EEPROM_ADDR_LEN,
 			(uchar *)eeprom, sizeof(*eeprom));
 	return ret;
@@ -196,7 +200,7 @@ int board_init(void)
 	/* Adress of boot parameters */
 	gd->bd->bi_boot_params = PHYS_SDRAM_1 + 0x100;
 
-	tqma28_eeprom_has_been_read = (read_eeprom(0, CONFIG_SYS_I2C_EEPROM_ADDR,
+	tqma28_eeprom_has_been_read = (read_eeprom(1, CONFIG_SYS_I2C_EEPROM_ADDR,
 						  &tqma28_eeprom)) ? 0 : 1;
 
 	return 0;
