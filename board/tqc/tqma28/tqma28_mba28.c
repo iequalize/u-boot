@@ -72,6 +72,12 @@ const iomux_cfg_t tqma28_bb_iomux_setup[] = {
 	MX28_PAD_ENET0_RXD3__ENET1_RXD1 | MUX_CONFIG_ENET,
 	MX28_PAD_ENET0_TXD2__ENET1_TXD0 | MUX_CONFIG_ENET,
 	MX28_PAD_ENET0_TXD3__ENET1_TXD1 | MUX_CONFIG_ENET,
+
+	/* SPI */
+	MX28_PAD_SSP2_SCK__SSP2_SCK | MUX_CONFIG_PU,
+	MX28_PAD_SSP2_MOSI__SSP2_CMD | MUX_CONFIG_PU,
+	MX28_PAD_SSP2_MISO__SSP2_D0 | MUX_CONFIG_PU,
+	MX28_PAD_SSP2_SS0__SSP2_D3 | MUX_CONFIG_PU,
 };
 
 void tqma28_bb_board_init_ll(const uint32_t arg, const uint32_t *resptr)
@@ -93,6 +99,13 @@ int tqma28_bb_board_early_init_f(void)
 	mxs_iomux_setup_pad(MX28_PAD_AUART2_RX__GPIO_3_8 |
 			MXS_PAD_4MA | MXS_PAD_3V3 | MXS_PAD_NOPULL);
 	gpio_direction_output(MX28_PAD_AUART2_RX__GPIO_3_8, 0);
+#endif
+
+#if defined(CONFIG_CMD_SF)
+	/* IO0 clock at 480MHz */
+	mxs_set_ioclk(MXC_IOCLK1, 480000);
+	/* SSP2 clock at 96MHz */
+	mxs_set_sspclk(MXC_SSPCLK2, 96000, 0);
 #endif
 
 	return 0;

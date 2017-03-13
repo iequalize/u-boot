@@ -267,7 +267,6 @@ int tqma28_setup_rtc_clocksource(void)
 	return 0;
 }
 
-extern int do_mmcops(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[]);
 int misc_init_r(void)
 {
 	char *mmccmd[2];
