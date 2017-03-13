@@ -1168,11 +1168,16 @@ static void mxs_power_set_vddx(const struct mxs_vddx_cfg *cfg,
  */
 static void mxs_setup_batt_detect(void)
 {
+#ifdef CONFIG_SYS_MXS_VDD5V_ONLY
+	debug("SPL: CONFIG_SYS_MXS_VDD5V_ONLY defined:\n");
+	debug("SPL: -> NOT starting battery voltage measurement.\n");
+#else
 	debug("SPL: Starting battery voltage measurement logic\n");
 
 	mxs_lradc_init();
 	mxs_lradc_enable_batt_measurement();
 	early_delay(10);
+#endif
 }
 
 /**
@@ -1233,6 +1238,19 @@ void mxs_power_init(void)
 		POWER_CTRL_DCDC4P2_BO_IRQ, &power_regs->hw_power_ctrl_clr);
 
 	writel(POWER_5VCTRL_PWDN_5VBRNOUT, &power_regs->hw_power_5vctrl_set);
+
+#ifdef CONFIG_SYS_MXS_VDD5V_ONLY
+	/* On i.MX28, a new bit has been added to allow automatic hardware
+	* shutdown if VDD4P2 browns out.  If we permanently only have a VDD5V
+	* source, we want to enable this bit.  For devices with dead batteries,
+	* we could also temporarily set this bit until the kernel battery
+	* charger sufficiently charges the battery but we won't do this for
+	* now as the latest release kernel versions aren't aware of  it
+	* and thus don't handle the proper setting/clearing of this bit.
+	*/
+	writel(0x8 << POWER_REFCTRL_VAG_VAL_OFFSET,
+		&power_regs->hw_power_refctrl_set);
+#endif
 
 	early_delay(1000);
 }
