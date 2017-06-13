@@ -30,6 +30,11 @@ DECLARE_GLOBAL_DATA_PTR;
 
 static uint8_t tqma28_enet_clk_int = 0;
 
+const char *tqma28l_bb_get_boardname(void)
+{
+	return "MBa28";
+}
+
 /*
  * Functions
  */

@@ -32,6 +32,24 @@ static uint16_t tqma28_emmc_dsr = 0x0100;
 /*
  * Functions
  */
+static const char *tqma28l_get_boardname(void)
+{
+#if defined(CONFIG_TQMA28L_AA)
+	return "TQMA28L (i.MX287)";
+#elif defined(CONFIG_TQMA28L_AB)
+	return "TQMA28L (i.MX283)";
+#else
+	return "TQMA28L (i.MX28?)";
+#endif
+}
+
+int checkboard(void)
+{
+	printf("Board: %s on a %s\n", tqma28l_get_boardname(),
+	       tqma28l_bb_get_boardname());
+	return 0;
+}
+
 int board_early_init_f(void)
 {
 	/* IO0 clock at 480MHz */
