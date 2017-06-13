@@ -45,4 +45,22 @@ config TQMA28_MBA28
 
 endchoice
 
+choice
+	prompt "TQMa28 boot variant"
+	default TQMA28_BOOT_MMC
+	help
+	  Select boot variant TQMa28. This defines also the environment location.
+
+config TQMA28_BOOT_MMC
+	bool "TQMa28 boot from SD / e-MMC"
+	help
+	  select SD / e-MMC as boot device
+
+config TQMA28_BOOT_SPI
+	bool "TQMa28 boot from SPI flash"
+	help
+	  select SPI flash as boot device
+
+endchoice
+
 endif

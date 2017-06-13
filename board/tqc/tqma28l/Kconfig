@@ -56,4 +56,17 @@ config TQMA28L_NONE
 
 endchoice
 
+choice
+	prompt "TQMa28L boot variant"
+	default TQMA28L_BOOT_MMC
+	help
+	  Select boot variant TQMa28L. This defines also the environment location
+
+config TQMA28L_BOOT_MMC
+	bool "TQMa28L boot from SD / e-MMC"
+	help
+	  select SD / e-MMC as boot device
+
+endchoice
+
 endif
