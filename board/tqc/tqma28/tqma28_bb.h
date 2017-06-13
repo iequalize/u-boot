@@ -35,6 +35,8 @@ int tqma28_bb_board_mmc_init(bd_t *bis);
 
 int tqma28_bb_board_early_init_f(void);
 int tqma28_bb_board_late_init(void);
+
+const char *tqma28_bb_get_boardname(void);
 #endif
 
 /*
