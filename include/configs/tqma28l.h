@@ -54,14 +54,17 @@ extern unsigned tqma28l_get_env_dev(void);
 
 /* Environment */
 
+#if defined(CONFIG_TQMA28L_BOOT_MMC)
+
 /* Environment is in MMC */
-#if defined(CONFIG_CMD_MMC) && defined(CONFIG_ENV_IS_IN_MMC)
+#define CONFIG_ENV_IS_IN_MMC
 #define CONFIG_SD_INDEX		0
 #define CONFIG_MMC_INDEX	1
 #define CONFIG_ENV_OVERWRITE
 #define CONFIG_ENV_OFFSET		(0x400) /* 1 KB */
 #define CONFIG_ENV_SIZE			(0x20000 - 0x400) /* 127 KB */
 #define CONFIG_SYS_MMC_ENV_DEV		tqma28l_get_env_dev()
+
 #endif
 
 /* FEC Ethernet on SoC */
