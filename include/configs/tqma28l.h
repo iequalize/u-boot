@@ -99,12 +99,14 @@ extern unsigned tqma28l_get_env_dev(void);
 #define CONFIG_FIT
 #define CONFIG_OF_BOARD_SETUP
 
+/* TODO: move to carier board header */
 #ifdef CONFIG_TQMA28L_AA
 #define CONFIG_TQMA28L_DTB	imx28-mba28l-aa.dtb
 #else
 #define CONFIG_TQMA28L_DTB	imx28-mba28l-ab.dtb
 #endif
 
+/* TODO: move to carier board header */
 #ifdef CONFIG_MXS_AUART
 #define CONFIG_CONSOLE_DEV	ttyAPP1
 #else
@@ -216,5 +218,7 @@ extern unsigned tqma28l_get_env_dev(void);
 
 /* The rest of the configuration is shared */
 #include <configs/mxs.h>
+
+/* TODO: add carrier board header */
 
 #endif /* __CONFIGS_TQMA28L_H__ */
