@@ -18,14 +18,27 @@ config SYS_SOC
 config SYS_CONFIG_NAME
 	default "tqma28l"
 
+choice
+	prompt "TQMa28L CPU variant"
+	default TQMA28L_AB
+	help
+	  Select CPU for TQMa28L
+
 config TQMA28L_AA
 	bool "TQMa28L-AA"
 	help
 	  select TQMa28L-AA variant: i.MX287 with ETH1 port and AUART3
 
+config TQMA28L_AB
+	bool "TQMa28L-AB"
+	help
+	  select TQMa28L-AB variant: i.MX283
+
+endchoice
+
 choice
 	prompt "TQMa28L base board variant"
-	optional
+	default TQMA28L_MBA28L
 	help
 	  Select base board for TQMa28L
 
