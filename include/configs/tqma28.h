@@ -11,6 +11,8 @@
 #ifndef __CONFIGS_TQMA28_H__
 #define __CONFIGS_TQMA28_H__
 
+#include <linux/kconfig.h>
+
 #if !defined(__ASSEMBLY__)
 extern unsigned tqma28_get_env_dev(void);
 #endif
