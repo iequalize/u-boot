@@ -25,6 +25,7 @@ extern unsigned tqma28_get_env_dev(void);
 /* U-Boot Commands */
 #define CONFIG_SYS_NO_FLASH
 #define CONFIG_DISPLAY_CPUINFO
+#define CONFIG_DISPLAY_BOARDINFO
 #define CONFIG_DOS_PARTITION
 #define CONFIG_MISC_INIT_R
 
