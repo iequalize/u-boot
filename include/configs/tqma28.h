@@ -64,7 +64,8 @@ extern unsigned tqma28_get_env_dev(void);
 #define CONFIG_MMC_INDEX 0
 #endif
 /* Environment is in MMC */
-#if defined(CONFIG_ENV_IS_IN_MMC)
+#if defined(CONFIG_TQMA28_BOOT_MMC)
+#define CONFIG_ENV_IS_IN_MMC
 #define CONFIG_ENV_OVERWRITE
 #define CONFIG_ENV_OFFSET	(0x400) /* 1 KB */
 #define CONFIG_ENV_SIZE	(0x20000 - 0x400) /* 127 KB */
@@ -90,7 +91,8 @@ extern unsigned tqma28_get_env_dev(void);
 		 "64k@512k(ENV)\0"
 #endif
 
-#if defined(CONFIG_CMD_SF) && defined(CONFIG_ENV_IS_IN_SPI_FLASH)
+#if defined(CONFIG_TQMA28_BOOT_SPI)
+#define CONFIG_ENV_IS_IN_SPI_FLASH
 #define CONFIG_SPL_MXS_SPI
 #define CONFIG_ENV_OVERWRITE
 #define CONFIG_ENV_OFFSET		SZ_512K

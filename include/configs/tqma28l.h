@@ -54,8 +54,9 @@ extern unsigned tqma28l_get_env_dev(void);
 
 /* Environment */
 
+#if defined(CONFIG_TQMA28L_BOOT_MMC)
 /* Environment is in MMC */
-#if defined(CONFIG_CMD_MMC) && defined(CONFIG_ENV_IS_IN_MMC)
+#define CONFIG_ENV_IS_IN_MMC
 #define CONFIG_SD_INDEX		0
 #define CONFIG_MMC_INDEX	1
 #define CONFIG_ENV_OVERWRITE
