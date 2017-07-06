@@ -69,4 +69,6 @@ config TQMA28L_BOOT_MMC
 
 endchoice
 
+source "board/tqc/common/Kconfig"
+
 endif
