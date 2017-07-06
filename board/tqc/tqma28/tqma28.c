@@ -28,7 +28,7 @@
 
 DECLARE_GLOBAL_DATA_PTR;
 
-static uint16_t tqma28_emmc_dsr = 0x0100;
+static const uint16_t tqma28_emmc_dsr = 0x0100;
 
 /*
  * Functions
