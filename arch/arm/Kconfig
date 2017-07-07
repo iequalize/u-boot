@@ -182,6 +182,7 @@ config TARGET_TQMA28
 	bool "Support TQMa28"
 	select CPU_ARM926EJS
 	select SUPPORT_SPL
+	select TQC_EMMC
 
 config TARGET_TQMA28L
 	bool "Support TQMa28L"

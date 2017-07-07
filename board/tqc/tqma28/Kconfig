@@ -63,4 +63,6 @@ config TQMA28_BOOT_SPI
 
 endchoice
 
+source "board/tqc/common/Kconfig"
+
 endif
