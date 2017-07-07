@@ -25,6 +25,7 @@
 #include <mmc.h>
 
 #include "tqma28_bb.h"
+#include "../common/tqc_emmc.h"
 
 DECLARE_GLOBAL_DATA_PTR;
 
@@ -249,11 +250,22 @@ int board_mmc_init(bd_t *bis)
 		struct mmc *mmc = find_mmc_device(CONFIG_MMC_INDEX);
 		if (mmc) {
 			mmc->block_dev.removable = 0;
-			mmc_set_dsr(mmc, tqma28_emmc_dsr);
 		}
 	}
 
 	return tqma28_bb_board_mmc_init(bis);
+}
+
+/* board-specific MMC card detection / modification */
+void board_mmc_detect_card_type(struct mmc *mmc)
+{
+	struct mmc *emmc = find_mmc_device(CONFIG_MMC_INDEX);
+
+	if (emmc != mmc)
+		return;
+
+	if (tqc_emmc_need_dsr(mmc) > 0)
+		mmc_set_dsr(mmc, tqma28_emmc_dsr);
 }
 #endif
 
@@ -302,11 +314,15 @@ int misc_init_r(void)
 #if defined(CONFIG_OF_BOARD_SETUP) && defined(CONFIG_OF_LIBFDT)
 int ft_board_setup(void *blob, bd_t *bd)
 {
+	struct mmc *mmc = find_mmc_device(CONFIG_MMC_INDEX);
+
 	fdt_shrink_to_minimum(blob);
 
-	do_fixup_by_path_u32(blob,
-				"/apb@80000000/apbh@80000000/ssp@80010000",
-				"dsr", tqma28_emmc_dsr, 1);
+	if (mmc && (tqc_emmc_need_dsr(mmc) > 0))
+		tqc_ft_fixup_emmc_dsr(blob,
+				      "/apb@80000000/apbh@80000000/ssp@80010000",
+				      tqma28_emmc_dsr);
+
 	tqma28_bb_ft_board_setup(blob, bd);
 
 	return 0;
