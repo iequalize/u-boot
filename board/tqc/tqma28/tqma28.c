@@ -318,10 +318,15 @@ int ft_board_setup(void *blob, bd_t *bd)
 
 	fdt_shrink_to_minimum(blob);
 
-	if (mmc && (tqc_emmc_need_dsr(mmc) > 0))
-		tqc_ft_fixup_emmc_dsr(blob,
-				      "/apb@80000000/apbh@80000000/ssp@80010000",
-				      tqma28_emmc_dsr);
+	/* bring in eMMC dsr settings if needed */
+	if (mmc && (!mmc_init(mmc))) {
+		if (tqc_emmc_need_dsr(mmc) > 0)
+			tqc_ft_fixup_emmc_dsr(blob,
+					      "/apb@80000000/apbh@80000000/ssp@80010000",
+					      tqma28_emmc_dsr);
+	} else {
+		puts("e-MMC: not present?\n");
+	}
 
 	tqma28_bb_ft_board_setup(blob, bd);
 
