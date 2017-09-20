@@ -204,7 +204,7 @@ extern unsigned tqma28_get_env_dev(void);
 		"sf probe && sf update $loadaddr U-Boot-SPI $filesize && "				\
 		"echo Copied U-Boot image from ethernet to SPI flash\0"					\
 	"upd_uboot_net=tftp $uboot && "									\
-		"setexpr r1 $filesize / 0x200 && setexpr r1 $r1 + 1 && "				\
+		"setexpr r1 $filesize + 0x1ff && setexpr r1 $r1 / 0x200 && "				\
 		"setexpr r0 " __stringify(TQMA28_UBOOT_SECT) " + 1 && mmc dev 0 && "			\
 		"mmc write $loadaddr $r0 $r1 && "							\
 		"mw 0x80056078 0x2 && "									\
@@ -217,7 +217,7 @@ extern unsigned tqma28_get_env_dev(void);
 		"mw 0x80056078 0x2 && "									\
 		"echo Copied U-Boot image from sd card to emmc\0"					\
 	"upd_kernel_net=tftp $kernel && "								\
-		"setexpr r1 $filesize / 0x200 && setexpr r1 $r1 + 1 && "				\
+		"setexpr r1 $filesize + 0x1ff && setexpr r1 $r1 / 0x200 && "				\
 		"mmc dev 0 && mmc write $loadaddr " __stringify(TQMA28_KERNEL_SECT) " $r1 && "		\
 		"echo Copied Kernel image from ethernet to emmc\0"					\
 	"upd_kernel_sd=mmc dev 1 && "									\
@@ -226,7 +226,7 @@ extern unsigned tqma28_get_env_dev(void);
 		"mmc write $loadaddr " __stringify(TQMA28_KERNEL_SECT) " " __stringify(TQMA28_KERNEL_SZ) " && "\
 		"echo Copied Kernel image from sd card to emmc\0"					\
 	"upd_fdt_net=tftp $dtb && "									\
-		"setexpr r1 $filesize / 0x200 && setexpr r1 $r1 + 1 && "				\
+		"setexpr r1 $filesize + 0x1ff && setexpr r1 $r1 / 0x200 && "				\
 		"mmc dev 0 && "										\
 		"mmc write $loadaddr " __stringify(TQMA28_FDT_SECT) " $r1 && "				\
 		"echo Copied device tree blob from ethernet to emmc\0"					\

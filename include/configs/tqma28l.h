@@ -130,7 +130,7 @@ extern unsigned tqma28l_get_env_dev(void);
 	"ipmode=static\0"						\
 									\
 	"upd_uboot_net=tftp $uboot && "					\
-		"setexpr r1 $filesize / 0x200 && setexpr r1 $r1 + 1 && "\
+		"setexpr r1 $filesize + 0x1ff && setexpr r1 $r1 / 0x200 && "\
 		"mmc dev 1 && mmc write $loadaddr 4001 $r1 && "		\
 		"mw 0x80056078 0x2 && "					\
 		"echo Copied U-Boot image from ethernet to emmc\0"	\
@@ -139,14 +139,14 @@ extern unsigned tqma28l_get_env_dev(void);
 		"mw 0x80056078 0x2 && "					\
 		"echo Copied U-Boot image from sd card to emmc\0"	\
 	"upd_kernel_net=tftp $kernel && "				\
-		"setexpr r1 $filesize / 0x200 && setexpr r1 $r1 + 1 && "\
+		"setexpr r1 $filesize + 0x1ff && setexpr r1 $r1 / 0x200 && "\
 		"mmc dev 1 && mmc write $loadaddr 8000 $r1 && "		\
 		"echo Copied Kernel image from ethernet to emmc\0"	\
 	"upd_kernel_sd=mmc dev 0 && mmc read $loadaddr 8000 4000 && "	\
 		"mmc dev 1 && mmc write $loadaddr 8000 4000 && "	\
 		"echo Copied Kernel image from sd card to emmc\0"	\
 	"upd_fdt_net=tftp $dtb && "					\
-		"setexpr r1 $filesize / 0x200 && setexpr r1 $r1 + 1 && "\
+		"setexpr r1 $filesize + 0x1ff && setexpr r1 $r1 / 0x200 && "\
 		"mmc dev 1 && mmc write $loadaddr 3000 $r1 && "		\
 		"echo Copied device tree blob from ethernet to emmc\0"	\
 	"upd_fdt_sd=mmc dev 0 && mmc read $loadaddr 3000 1000 && "	\
